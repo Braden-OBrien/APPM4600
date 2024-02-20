@@ -34,8 +34,8 @@ def newton(f,fp,p0,tol,Nmax):
   return [p,pstar,info,it]
         
 # use routine
-f = lambda x: np.e**(x**2+7*x-30)
-fp = lambda x: (2*x+7)*np.e**(x**2+7*x-30)
+f = lambda x: (np.e)**(x**2+7*x-30)
+fp = lambda x: (2*x+7)*(np.e)**(x**2+7*x-30)
 
 p0 = 4.5
 Nmax = 100

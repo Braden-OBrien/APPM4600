@@ -4,7 +4,7 @@ import numpy as np
 def driver():
 
 # use routines    
-    f = lambda x: np.e**(x**2+7*x-30)
+    f = lambda x: (np.e)**(x**2+7*x-30)
     a = 2
     b = 4.5
 

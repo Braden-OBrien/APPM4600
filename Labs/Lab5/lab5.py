@@ -4,9 +4,9 @@ import numpy as np
 def driver():
 
 # use routines    
-    f = lambda x: np.e**(x**2+7*x-30)
-    fp = lambda x: (2*x+7)*np.e**(x**2+7*x-30)
-    fpp = lambda x: 2*np.e**(x**2+7*x-30) + ((2*x+7)**2)*np.e**(x**2+7*x-30)
+    f = lambda x: (np.e)**(x**2+7*x-30)
+    fp = lambda x: (2*x+7)*(np.e)**(x**2+7*x-30)
+    fpp = lambda x: 2*(np.e)**(x**2+7*x-30) + ((2*x+7)**2)*(np.e)**(x**2+7*x-30)
     a = 2
     b = 4.5
 
