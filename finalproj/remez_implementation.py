@@ -54,27 +54,29 @@ def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, ret_interp_no
 
         for extrema in extrema_est:
             if (residual(extrema) < 0):
+                #extrema_list.append(scipy.optimize.minimize(residual, extrema, method='Nelder-Mead', tol=1e-9).x[0])
                 extrema_list.append(scipy.optimize.fmin(residual, extrema, xtol=1e-9, disp=0)[0])
             else:
+                #extrema_list.append(scipy.optimize.minimize((lambda x: -1*residual(x)), extrema, method='Nelder-Mead', tol=1e-9).x[0])
                 extrema_list.append(scipy.optimize.fmin((lambda x: -1*residual(x)), extrema, xtol=1e-9, disp=0)[0])
         
-        errors = [np.abs(x_points[i]-extrema_list[i-1]) for i in range(1, degree+1)]
-        
-        if(max(errors) <= err_tol * min(errors)):
-            break
-        
-        points = np.linspace(-1, 1, 1000)
+        errors = [np.abs(residual(extrema_list[i]))[0] for i in range(degree)]
         
         if(saveplots):
+            points = np.linspace(-1, 1, 1000)
             plt.clf()
             plt.plot(points, residual(points))
             plt.scatter(x_points, [residual(pt) for pt in x_points])
-            plt.savefig('remez_iterative_log'+str(loop))
+            plt.savefig('remez_iterative'+str(loop))
         if(savelogplots):
+            points = np.linspace(-1, 1, 1000)
             plt.clf()
             plt.plot(points, np.log10(np.abs(residual(points))))
             plt.scatter(x_points, [np.log10(np.abs(residual(pt))) for pt in x_points])
             plt.savefig('remez_iterative_log'+str(loop))
+        
+        if(max(errors) <= err_tol * min(errors)):
+            break
         
         x_points[1:degree+1] = extrema_list
         

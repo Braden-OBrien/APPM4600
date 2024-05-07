@@ -1,13 +1,37 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import remez_implementation
+import remez_poly
+import time
 
 input_function = lambda x: (np.e)**x
 lower_bound = -1
 upper_bound = 1
-degree = 3
+degree = 12
 
-(minimax, residual, err, x_points) = remez_implementation.remez_polynomial(input_function, lower_bound, upper_bound, degree, ret_interp_nodes=1)
+times_us = []
+times_dk = []
+
+errs = []
+
+for i in range(10):
+    time_us = time.perf_counter()
+    (minimax, residual, err1, x_points) = remez_implementation.remez_polynomial(input_function, lower_bound, upper_bound, degree, ret_interp_nodes=1)
+    time_mid = time.perf_counter()
+    res, err2 = remez_poly.remez(input_function, degree, lower_bound, upper_bound)
+    time_final = time.perf_counter()
+    
+    times_us.append(time_mid-time_us)
+    times_dk.append(time_final-time_mid)
+    errs.append((err1, err2))
+
+
+print('CPU Time for our implementation', np.average(times_us))
+print('CPU Time for packaged implementation', np.average(times_dk))
+
+print('Our err estimate is', err1)
+print('Packaged err estimate is', err2)
+
 
 points = np.linspace(-1, 1, 1000)
 
