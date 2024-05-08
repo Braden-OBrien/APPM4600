@@ -4,6 +4,14 @@ import scipy.linalg
 import scipy.optimize
 import matplotlib.pyplot as plt
 
+"""
+    Implementation of the remez algorithm.
+
+    MAJOR credit goes to Dustin Kenefake @DKenefake
+    several lines in this implementation came directly from his implementation of remez_poly.py
+
+"""
+
 def cheby_nodes(n: int, a: float, b: float):
     """Generate a set of n Chebyshev Nodes over interval [a, b]"""
     scale = abs(b-a)
