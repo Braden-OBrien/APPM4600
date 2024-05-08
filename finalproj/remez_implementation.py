@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 
 def cheby_nodes(n: int, a: float, b: float):
     """Generate a set of n Chebyshev Nodes over interval [a, b]"""
-    iter = np.arange(1, n+1)
-    return [(np.abs(b-a)/2)*(np.cos((np.pi)*((2*i-1)/(2*n))))+(np.abs(a+b)/2) for i in iter]
+    scale = abs(b-a)
+    #return [0.5*scale*(np.cos((i/(n-1))*(np.pi))) for i in range(n)] #Chebyshev of second kind
+    return [0.5*scale*(np.cos((np.pi)*((2*i-1)/(2*n)))) for i in range(1, n+1)] #Chebyshev of first kind
 
 def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, 
                      ret_interp_nodes=0, saveplots=0, savelogplots=0, saveextremaplots=0):
@@ -24,6 +25,7 @@ def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10,
     x_points = [b]
     x_points.extend(y_points[1:degree+1])
     x_points.append(a)
+
 
     for loop in range(max_iter):
 
