@@ -9,7 +9,8 @@ def cheby_nodes(n: int, a: float, b: float):
     iter = np.arange(1, n+1)
     return [(np.abs(b-a)/2)*(np.cos((np.pi)*((2*i-1)/(2*n))))+(np.abs(a+b)/2) for i in iter]
 
-def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, ret_interp_nodes=0, saveplots=0, savelogplots=0):
+def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, 
+                     ret_interp_nodes=0, saveplots=0, savelogplots=0, saveextremaplots=0):
     """Polynomial implementation of the Remez Algorithm
        Returns -> (polynomial, residual, err_max)"""
     
@@ -50,6 +51,9 @@ def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, ret_interp_no
         residual = lambda x: f(x) - minimax(x)
 
         extrema_est = x_points[1:degree+1]
+        for i in range(len(extrema_est)-1):
+            if (extrema_est[i] <= 1e-6):
+                extrema_est[i] += extrema_est[i+1]/(degree**5)
         extrema_list = []
 
         for extrema in extrema_est:
@@ -74,6 +78,12 @@ def remez_polynomial(f, a, b, degree=5, err_tol=1e-6, max_iter=10, ret_interp_no
             plt.plot(points, np.log10(np.abs(residual(points))))
             plt.scatter(x_points, [np.log10(np.abs(residual(pt))) for pt in x_points])
             plt.savefig('remez_iterative_log'+str(loop))
+        if(saveextremaplots):
+            points = np.linspace(-1, 1, 1000)
+            plt.clf()
+            plt.plot(points, residual(points))
+            plt.scatter(extrema_list, [residual(pt) for pt in extrema_list], color='r')
+            plt.savefig('remez_iterative_extrema'+str(loop))
         
         if(max(errors) <= err_tol * min(errors)):
             break
